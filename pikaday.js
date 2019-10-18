@@ -287,7 +287,10 @@
         onDraw: null,
 
         // Enable keyboard input
-        keyboardInput: true
+        keyboardInput: true,
+
+        // Close the picker automatically on date selection
+        closeAutomatically: true
     },
 
 
@@ -497,7 +500,10 @@
                     self.setDate(new Date(target.getAttribute('data-pika-year'), target.getAttribute('data-pika-month'), target.getAttribute('data-pika-day')));
                     if (opts.bound) {
                         sto(function() {
-                            self.hide();
+                            if (opts.closeAutomatically) {
+                                self.hide();
+                            }
+
                             if (opts.blurFieldOnSelect && opts.field) {
                                 opts.field.blur();
                             }
@@ -621,7 +627,7 @@
             }
             while ((pEl = pEl.parentNode));
 
-            if (!self._c) {
+            if (opts.closeAutomatically && !self._c) {
                 self._b = sto(function() {
                     self.hide();
                 }, 50);
@@ -765,6 +771,8 @@
                     opts.yearRange = 100;
                 }
             }
+
+            opts.closeAutomatically = !!opts.closeAutomatically;
 
             return opts;
         },
